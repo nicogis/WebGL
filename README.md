@@ -3,7 +3,7 @@
 Samples [forked](https://github.com/jkieboom/devsummit-palm-springs-2017) from DS2017
 
 [Sample 0](https://nicogis.github.io/WebGL/)
-Description: loads a collada model (a sweeper). Click on map and waiting. Rotate a model with key 'r'. Event 'Mouse move' moves the model
+Description: loads a collada model (a sweeper). Click on map and waiting. Rotate the model with key 'r'. Event 'Mouse move' moves the model
 
 [Sample 1](https://nicogis.github.io/WebGL/index01.html)
 Description: visualize ECEF coordinate system. See for details this [link](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-externalRenderers.html).
@@ -26,8 +26,8 @@ Description: Video texture. Drag with CTRL key for create a box texture
 [Sample 7](https://nicogis.github.io/WebGL/index07.html)
 Description: flow
 
-[Sample 7](https://nicogis.github.io/WebGL/Sweeper.html)
-Description: Load collada model with three.js
+[Sample 8](https://nicogis.github.io/WebGL/Sweeper.html)
+Description: Load collada model (a sweeper) with three.js
 
 
 Useful Links:
