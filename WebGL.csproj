@@ -126,6 +126,28 @@
     <Content Include="app\data\avatar.dae" />
     <Content Include="app\data\pump\pump.dae" />
     <Content Include="app\data\monster\monster.dae" />
+    <Content Include="app\01-basic-render-coordinate-system.js.map" />
+    <Content Include="app\02-basic-camera-and-lighting.js.map" />
+    <Content Include="app\03-basic-precision.js.map" />
+    <Content Include="app\04-basic-threejs.js.map" />
+    <Content Include="app\05-threejs-loader-animations.js.map" />
+    <Content Include="app\06-threejs-video-textures.js.map" />
+    <Content Include="app\07-velocity-flow.js.map" />
+    <Content Include="app\data\kawada-hironx.dae" />
+    <Content Include="app\data\multimaterial.dae" />
+    <Content Include="app\data\sweeper.dae" />
+    <Content Include="app\data\web.config" />
+    <Content Include="app\data\sweeper\Map__1_Raytrace.tga" />
+    <Content Include="app\data\sweeper\Map__2_Raytrace.tga" />
+    <Content Include="app\data\sweeper\Map__3_Raytrace.tga" />
+    <Content Include="app\data\sweeper\Map__4_Raytrace.tga" />
+    <Content Include="app\data\sweeper\Map__5_Raytrace.tga" />
+    <Content Include="app\data\sweeper\Map__6_Raytrace.tga" />
+    <Content Include="app\data\sweeper\Map__7_Raytrace.tga" />
+    <Content Include="app\data\sweeper\Map__8_Raytrace.tga" />
+    <Content Include="app\data\sweeper\sweeper.mtl" />
+    <Content Include="app\data\sweeper\sweeper.obj" />
+    <Content Include="README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -181,7 +203,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="app\data\sweeper\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup>
