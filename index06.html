@@ -1,0 +1,62 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+    <title>ArcGIS JSAPI 4.4 TypeScript Demo</title>
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #viewLog {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 12px;
+            background-color: rgba(200, 200, 200, 0.5);
+            border: 1px solid black;
+        }
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.4/esri/css/main.css">
+    <script>
+        var locationPath = location.pathname.replace(/\/[^\/]+$/, "");
+        window.dojoConfig = {
+            packages: [
+                {
+                    name: "app",
+                    location: locationPath + "/app"
+                }
+            ]
+        };
+    </script>
+
+
+    <script src="app/lib/threejs/three.min.js"></script>
+    <script src="app/lib/threejs/loaders/collada/ColladaLoader.js"></script>
+    <script src="app/lib/threejs/loaders/collada/KeyFrameAnimation.js"></script>
+    <script src="app/lib/threejs/loaders/collada/AnimationHandler.js"></script>
+    <script src="app/lib/threejs/loaders/collada/Animation.js"></script>
+
+    <script src="https://js.arcgis.com/4.4"></script>
+</head>
+<body>
+    <div id="viewDiv"></div>
+    <script>
+
+    require(["app/06-threejs-video-textures"], function(app)
+    {
+         app.initialize();
+    });
+
+    </script>
+
+    <div id="viewLog">
+       
+    </div>
+</body>
+</html>

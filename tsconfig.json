@@ -1,0 +1,19 @@
+﻿{
+  "compilerOptions": {
+    "module": "amd",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "reactNamespace": "jsxFactory",
+    "target": "es6",
+    "experimentalDecorators": true,
+    "preserveConstEnums": true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "./app/*"
+  ]
+}

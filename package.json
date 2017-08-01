@@ -1,0 +1,17 @@
+{
+  "name": "Bus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/arcgis-js-api": "^4.3.1",
+    "@types/gl-matrix": "^2.2.34",
+    "@types/three": "^0.84.15"
+  }
+}

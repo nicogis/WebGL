@@ -1,0 +1,213 @@
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2574F603-4B6C-4A30-BFDD-E3BC09EEDFDF}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TypeScriptHTMLApp1</RootNamespace>
+    <AssemblyName>TypeScriptHTMLApp1</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="app\01-basic-render-coordinate-system.js" />
+    <Content Include="app\02-basic-camera-and-lighting.js" />
+    <Content Include="app\03-basic-precision.js" />
+    <Content Include="app\04-basic-threejs.js" />
+    <Content Include="app\05-threejs-loader-animations.js" />
+    <Content Include="app\06-threejs-video-textures.js" />
+    <Content Include="app\07-velocity-flow.js" />
+    <Content Include="app\css\style.css" />
+    <Content Include="app\data\monster\monster.jpg" />
+    <Content Include="app\data\monster\readme.txt" />
+    <Content Include="app\data\pump\pump_body.jpg" />
+    <Content Include="app\data\pump\pump_gears.jpg" />
+    <Content Include="app\data\pump\pump_metalreflect.jpg" />
+    <Content Include="app\data\VWS_B_Male2-2.jpg" />
+    <Content Include="app\data\wind-global.png" />
+    <Content Include="app\lib\threejs\loaders\collada\Animation.js" />
+    <Content Include="app\lib\threejs\loaders\collada\AnimationHandler.js" />
+    <Content Include="app\lib\threejs\loaders\collada\ColladaLoader.js" />
+    <Content Include="app\lib\threejs\loaders\collada\KeyFrameAnimation.js" />
+    <Content Include="app\lib\threejs\loaders\DDSLoader.js" />
+    <Content Include="app\lib\threejs\loaders\MTLLoader.js" />
+    <Content Include="app\lib\threejs\loaders\OBJLoader.js" />
+    <Content Include="app\lib\threejs\three.min.js" />
+    <Content Include="app\main.js" />
+    <Content Include="app\support\log.js" />
+    <Content Include="app\support\webglUtils.js" />
+    <Content Include="app\support\widgets.js" />
+    <Content Include="index03.html" />
+    <Content Include="index04.html" />
+    <Content Include="index05.html" />
+    <Content Include="index06.html" />
+    <Content Include="index07.html" />
+    <Content Include="index02.html" />
+    <Content Include="index01.html" />
+    <Content Include="Sweeper.html" />
+    <Content Include="package.json" />
+    <Content Include="tsconfig.json" />
+    <Content Include="app\main.js.map" />
+    <Content Include="node_modules\%40types\arcgis-js-api\LICENSE" />
+    <Content Include="node_modules\%40types\arcgis-js-api\package.json" />
+    <Content Include="node_modules\%40types\arcgis-js-api\README.md" />
+    <Content Include="node_modules\%40types\gl-matrix\package.json" />
+    <Content Include="node_modules\%40types\gl-matrix\README.md" />
+    <Content Include="node_modules\%40types\gl-matrix\types-metadata.json" />
+    <Content Include="node_modules\%40types\three\LICENSE" />
+    <Content Include="node_modules\%40types\three\package.json" />
+    <Content Include="node_modules\%40types\three\README.md" />
+    <Content Include="node_modules\%40types\webvr-api\package.json" />
+    <Content Include="node_modules\%40types\webvr-api\README.md" />
+    <Content Include="node_modules\%40types\webvr-api\types-metadata.json" />
+    <Content Include="app\data\animated-object.dae" />
+    <Content Include="app\data\the-power-of-maps.mp4" />
+    <Content Include="app\support\log.js.map" />
+    <Content Include="app\support\webglUtils.js.map" />
+    <Content Include="app\support\widgets.js.map" />
+    <Content Include="app\data\avatar.dae" />
+    <Content Include="app\data\pump\pump.dae" />
+    <Content Include="app\data\monster\monster.dae" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="index.html" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="app\01-basic-render-coordinate-system.ts" />
+    <TypeScriptCompile Include="app\02-basic-camera-and-lighting.ts" />
+    <TypeScriptCompile Include="app\03-basic-precision.ts" />
+    <TypeScriptCompile Include="app\04-basic-threejs.ts" />
+    <TypeScriptCompile Include="app\05-threejs-loader-animations.ts" />
+    <TypeScriptCompile Include="app\06-threejs-video-textures.ts" />
+    <TypeScriptCompile Include="app\07-velocity-flow.ts" />
+    <TypeScriptCompile Include="app\main.ts" />
+    <TypeScriptCompile Include="app\support\log.ts" />
+    <TypeScriptCompile Include="app\support\webglUtils.ts" />
+    <TypeScriptCompile Include="app\support\widgets.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\arcgis-js-api\index.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\gl-matrix\index.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\detector.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\index.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-canvasrenderer.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-colladaLoader.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-copyshader.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-core.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-css3drenderer.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-ctmloader.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-editorcontrols.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-effectcomposer.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-examples.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-FirstPersonControls.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-maskpass.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-octree.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-orbitcontrols.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-orthographictrackballcontrols.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-projector.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-renderpass.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-shaderpass.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-trackballcontrols.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-transformcontrols.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-vrcontrols.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\three-vreffect.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\webvr-api\index.d.ts" />
+    <TypeScriptCompile Include="node_modules\%40types\three\keyframeanimation.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\data\sweeper\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>10202</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:10202/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
