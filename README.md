@@ -33,5 +33,5 @@ Description: Loads collada model (a sweeper) with three.js.
 Useful links:
 - [External Renderer with API JS ArcGIS](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-externalRenderers.html)
 - [Three.js](https://threejs.org/)
-- [WebGL](http://learningwebgl.com)
+- [WebGL](https://webglfundamentals.org)
 
