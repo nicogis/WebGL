@@ -1,9 +1,12 @@
-﻿## ArcGIS Javascript API Samples using WebGL
+
+## ArcGIS Javascript API Samples using WebGL
 
 Samples [forked](https://github.com/jkieboom/devsummit-palm-springs-2017) from DS2017
 
 [Sample 0](https://nicogis.github.io/WebGL/)
 Description: loads a collada model (a sweeper). Click on map and wait. Rotate the model with key 'r'. Event 'Mouse move' moves the model.
+![Sweeper GeoEvent](Sweeper.PNG)
+
 
 [Sample 1](https://nicogis.github.io/WebGL/index01.html)
 Description: visualizes ECEF coordinate system. See for details this [link](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-externalRenderers.html).
