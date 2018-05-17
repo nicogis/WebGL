@@ -32,6 +32,20 @@ Description: Flow.
 [Sample 8](https://nicogis.github.io/WebGL/Sweeper.html)
 Description: Loads collada model (a sweeper) with three.js.
 
+[Sample Esri](https://maps.esri.com/jg/threejs/external-renderer-sample/index.html)
+Description: External Renderers
+
+[Tectonic](https://jkieboom.github.io/devsummit-palm-springs-2018/demos/tectonic/)
+Description: Tectonic (dev summit 2018)
+
+[Latest Winds and Temperatures](https://maps.esri.com/jg/CurrentWind/index.html)
+Description: Latest Winds and Temperatures
+
+[Airports](https://maps.esri.com/jg/Airports/index.html)
+Description: US Airports Locations
+
+[Esri’s Applications Prototype Lab] (https://maps.esri.com/portal/WebApps/index.html)
+Description: Samples from Esri’s Applications Prototype Lab
 
 Useful links:
 - [External Renderer with API JS ArcGIS](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-externalRenderers.html)
