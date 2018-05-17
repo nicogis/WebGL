@@ -44,7 +44,7 @@ Description: Latest Winds and Temperatures
 [Airports](https://maps.esri.com/jg/Airports/index.html)
 Description: US Airports Locations
 
-[Esri’s Applications Prototype Lab] (https://maps.esri.com/portal/WebApps/index.html)
+[Esri's Applications Prototype Lab](https://maps.esri.com/portal/WebApps/index.html)
 Description: Samples from Esri’s Applications Prototype Lab
 
 Useful links:
