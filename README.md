@@ -21,26 +21,20 @@ Description: Animation.
 [Sample 6](https://nicogis.github.io/WebGL/index06.html)
 Description: Video texture. Drag with the CTRL key to create a box texture and then click on it to start the video.
 
-[Sample 7](https://nicogis.github.io/WebGL/index07.html)
+[Animated Flow](https://github.com/Esri/animated-flow-ts)
 Description: Flow.
 
 [Sample 8](https://nicogis.github.io/WebGL/Sweeper.html)
 Description: Loads collada model (a sweeper) with three.js.
 
-[Sample Esri](https://maps.esri.com/jg/threejs/external-renderer-sample/index.html)
-Description: External Renderers
-
 [Tectonic](https://jkieboom.github.io/devsummit-palm-springs-2018/demos/tectonic/)
 Description: Tectonic (dev summit 2018)
 
-[Latest Winds and Temperatures](https://maps.esri.com/jg/CurrentWind/index.html)
-Description: Latest Winds and Temperatures
+[Animated windmills](https://developers.arcgis.com/javascript/latest/sample-code/custom-render-node-windmills/live/)
+Description: Custom RenderNode - Animated Windmills
 
-[Airports](https://maps.esri.com/jg/Airports/index.html)
-Description: US Airports Locations
-
-[Advanced WebGL in 3D SceneViews](https://esri.github.io/devsummit-2019-3D-jsapi/Advanced-WebGL-in-3D-SceneViews/External-Volume-Renderer/#)
-Description: Advanced WebGL in 3D SceneViews
+[Realistic water visualization in 3D](https://developers.arcgis.com/javascript/latest/sample-code/visualization-realistic-water/live/)
+Description: Realistic water visualization in 3D
 
 [Renderer Skeleton](https://nicogis.github.io/externalRendererSkeleton/)
 Description: Renderer Skeleton
@@ -49,7 +43,8 @@ Description: Renderer Skeleton
 Description: Samples from Esri’s Applications Prototype Lab
 
 Useful links:
-- [External Renderer with API JS ArcGIS](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-externalRenderers.html)
+- [External Renderer with API JS ArcGIS - Deprecated](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-externalRenderers.html)
+- [RenderNode with API JS ArcGIS - since ArcGIS Maps SDK for JavaScript 4.29](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-webgl-RenderNode.html)
 - [Three.js](https://threejs.org/)
 - [WebGL](https://webglfundamentals.org)
 
