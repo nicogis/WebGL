@@ -684,7 +684,7 @@ define(["require", "exports", "esri/request", "esri/Map", "esri/geometry/Extent"
         view = new SceneView({
             container: "viewDiv",
             map: new Map({
-                basemap: "topo-vector"
+                basemap: "streets-night-vector"
             }),
             constraints: {
                 altitude: {
