@@ -19,7 +19,7 @@ Description: three.js. Adds box three.js in scene.
 Description: Animation.
 
 [Sample 6](https://nicogis.github.io/WebGL/index06.html)
-Description: Video texture. Drags with CTRL key for create a box texture.
+Description: Video texture. Drag with the CTRL key to create a box texture and then click on it to start the video.
 
 [Sample 7](https://nicogis.github.io/WebGL/index07.html)
 Description: Flow.
