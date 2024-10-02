@@ -905,7 +905,7 @@ export function initialize() {
     container: "viewDiv",
 
     map: new Map({
-      basemap: "topo-vector"
+      basemap: "streets-night-vector"
     }),
 
     constraints: {
