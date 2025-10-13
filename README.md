@@ -4,7 +4,7 @@
 Samples [forked](https://github.com/jkieboom/devsummit-palm-springs-2017) from DS2017
 
 [Sample 1](https://nicogis.github.io/WebGL/index01.html)
-Description: visualizes ECEF coordinate system. See for details this [link](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-externalRenderers.html).
+Description: visualizes ECEF coordinate system. See for details this [link](https://en.wikipedia.org/wiki/Earth-centered,_Earth-fixed_coordinate_system).
 
 [Sample 2](https://nicogis.github.io/WebGL/index02.html)
 Description: Camera and lighting.
