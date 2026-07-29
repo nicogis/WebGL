@@ -45,6 +45,10 @@ Description: Samples from Esri’s Applications Prototype Lab
 [Demo 3D (old)](https://github.com/nicogis/Demo3D)
 Description: Samples 3D (old)
 
+[Sample 8](https://nicogis.github.io/water.html)
+Description: Water simulation.
+
+
 Useful links:
 - [External Renderer with API JS ArcGIS - Deprecated](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-externalRenderers.html)
 - [RenderNode with API JS ArcGIS - since ArcGIS Maps SDK for JavaScript 4.29](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-3d-webgl-RenderNode.html)
