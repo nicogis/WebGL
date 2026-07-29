@@ -30,10 +30,10 @@ Description: Loads collada model (a sweeper) with three.js.
 [Tectonic](https://jkieboom.github.io/devsummit-palm-springs-2018/demos/tectonic/)
 Description: Tectonic (dev summit 2018)
 
-[Animated windmills](https://developers.arcgis.com/javascript/latest/sample-code/custom-render-node-windmills/live/)
+[Animated windmills](https://developers.arcgis.com/javascript/latest/sample-code/custom-render-node-windmills/)
 Description: Custom RenderNode - Animated Windmills
 
-[Realistic water visualization in 3D](https://developers.arcgis.com/javascript/latest/sample-code/visualization-realistic-water/live/)
+[Realistic water visualization in 3D](https://developers.arcgis.com/javascript/latest/sample-code/visualization-realistic-water/)
 Description: Realistic water visualization in 3D
 
 [Renderer Skeleton](https://nicogis.github.io/externalRendererSkeleton/)
