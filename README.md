@@ -45,7 +45,7 @@ Description: Samples from Esri’s Applications Prototype Lab
 [Demo 3D (old)](https://github.com/nicogis/Demo3D)
 Description: Samples 3D (old)
 
-[Water](https://github.nicogis.it/WebGL/water.html)
+[Water](https://github.nicogis.it/WebGL/water)
 Description: Water simulation.
 
 
