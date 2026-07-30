@@ -4,7 +4,7 @@
 [Swimming pool](https://github.nicogis.it/Demo3D/js/3d/water/)
 Description: Water simulation.
 
-[Sweeper](https://nicogis.github.io/WebGL/index0.html)
+[Sweeper](https://nicogis.github.io/WebGL/index.html)
 Description: Loads collada model (a sweeper) with three.js.
 
 Samples [forked](https://github.com/jkieboom/devsummit-palm-springs-2017) from DS2017
