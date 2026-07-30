@@ -18,8 +18,64 @@
             top: 12px;
             right: 12px;
             padding: 12px;
-            background-color: rgba(200, 200, 200, 0.5);
+            background-color: rgba(200, 200, 200, 0.9);
             border: 1px solid black;
+            min-width: 120px;
+            min-height: 28px;
+            box-sizing: border-box;
+            z-index: 10;
+            font-family: monospace;
+            font-size: 14px;
+            color: #000;
+        }
+
+        #viewControls {
+            position: absolute;
+            top: 70px;
+            right: 12px;
+            padding: 8px 12px;
+            background-color: rgba(200, 200, 200, 0.9);
+            border: 1px solid black;
+            box-sizing: border-box;
+            z-index: 10;
+            font-family: monospace;
+            font-size: 14px;
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            user-select: none;
+        }
+
+        #viewControls .row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #viewControls label {
+            cursor: pointer;
+        }
+
+        #btnMoveForward {
+            width: 100%;
+            padding: 4px 8px;
+            font-family: monospace;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #444;
+            color: #fff;
+            border: 1px solid #222;
+            border-radius: 3px;
+        }
+
+        #btnMoveForward:hover {
+            background-color: #222;
+        }
+
+        #btnMoveForward:disabled {
+            background-color: #999;
+            cursor: default;
         }
     </style>
     <link rel="stylesheet" href="https://js.arcgis.com/4.4/esri/css/main.css">
@@ -34,7 +90,6 @@
             ]
         };
     </script>
-
 
     <script src="app/lib/threejs/three.min.js"></script>
     <script src="app/lib/threejs/loaders/collada/ColladaLoader.js"></script>
@@ -58,11 +113,16 @@
     {
          app.initialize();
     });
-
     </script>
 
-    <div id="viewLog">
-       
+    <div id="viewLog">Click on the map to add the sweeper. Hold <b>Shift</b> to yaw.</div>
+
+    <div id="viewControls">
+        <div class="row">
+            <input type="checkbox" id="chkPulisci" checked />
+            <label for="chkPulisci">Clean</label>
+        </div>
+        <button id="btnMoveForward" disabled>&#9654; Move +100 m</button>
     </div>
 </body>
 </html>

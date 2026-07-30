@@ -13,5 +13,8 @@
     "@types/arcgis-js-api": "^4.3.1",
     "@types/gl-matrix": "^2.2.34",
     "@types/three": "^0.84.15"
+  },
+  "devDependencies": {
+    "eslint": "^10.8.0"
   }
 }

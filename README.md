@@ -1,6 +1,12 @@
 
 ## ArcGIS Javascript API Samples using WebGL
 
+[Swimming pool](https://github.nicogis.it/Demo3D/js/3d/water/)
+Description: Water simulation.
+
+[Sweeper](https://nicogis.github.io/WebGL/index.html)
+Description: Loads collada model (a sweeper) with three.js.
+
 Samples [forked](https://github.com/jkieboom/devsummit-palm-springs-2017) from DS2017
 
 [Sample 1](https://nicogis.github.io/WebGL/index01.html)
@@ -45,8 +51,7 @@ Description: Samples from Esri’s Applications Prototype Lab
 [Demo 3D (old)](https://github.com/nicogis/Demo3D)
 Description: Samples 3D (old)
 
-[Water](https://github.nicogis.it/Demo3D/js/3d/water/)
-Description: Water simulation.
+
 
 
 Useful links:
