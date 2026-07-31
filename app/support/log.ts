@@ -17,5 +17,5 @@ export function timeout(...args: any[]) {
   timeoutHandle = setTimeout(() => {
     timeoutHandle = 0;
     message("");
-  }, 2000);
+  }, 5000);
 }

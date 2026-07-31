@@ -17,7 +17,7 @@ define(["require", "exports"], function (require, exports) {
         timeoutHandle = setTimeout(() => {
             timeoutHandle = 0;
             message("");
-        }, 2000);
+        }, 5000);
     }
     exports.timeout = timeout;
 });

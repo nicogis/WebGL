@@ -206,7 +206,7 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
 
             // Durante il Play: usa _brushActive dall'array di rotta.
             // A riposo:        usa il checkbox (che è abilitato).
-            const chk     = document.getElementById("chkPulisci");
+            const chk     = document.getElementById("chkClean");
             const brushOn = this.moving
                 ? this._brushActive
                 : (chk && chk.checked);
@@ -238,7 +238,7 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
                 this.applyWrapperTransformAt(this.point);
                 this.moving = false;
                 // Riabilita checkbox e logga fine
-                const chk = document.getElementById("chkPulisci");
+                const chk = document.getElementById("chkClean");
                 if (chk) chk.disabled = false;
                 const btn = document.getElementById("btnMoveForward");
                 if (btn) btn.textContent = "▶ Play";
@@ -511,6 +511,8 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
 
             view.on("click", (event) => {
                 if (event.native && event.native.shiftKey) return;
+                if (event.native && event.native.button !== 0) return;  // ignora tasto destro/centrale
+                if (renderer.moving) return;                              // ignora click durante il Play
                 let mapPoint = event.mapPoint;
                 if (!mapPoint) mapPoint = view.toMap(new ScreenPoint(event.x, event.y));
                 if (mapPoint) renderer.add(mapPoint);
