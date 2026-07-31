@@ -102,13 +102,6 @@
 <body>
     <div id="viewDiv"></div>
     <script>
-    //require(["app/01-basic-render-coordinate-system"], function(app)
-    //require(["app/02-basic-camera-and-lighting"], function(app)
-    //require(["app/03-basic-precision"], function(app)
-    //require(["app/04-basic-threejs"], function(app)
-    //require(["app/05-threejs-loader-animations"], function(app)
-    //require(["app/06-threejs-video-textures"], function(app)
-    //require(["app/07-velocity-flow"], function(app)
     require(["app/main"], function(app)
     {
          app.initialize();
@@ -119,10 +112,10 @@
 
     <div id="viewControls">
         <div class="row">
-            <input type="checkbox" id="chkPulisci" checked />
-            <label for="chkPulisci">Clean</label>
+            <input type="checkbox" id="chkClean" checked />
+            <label for="chkClean">Clean</label>
         </div>
-        <button id="btnMoveForward" disabled>&#9654; Move +100 m</button>
+        <button id="btnMoveForward" disabled>&#9654; Play</button>
     </div>
 </body>
 </html>

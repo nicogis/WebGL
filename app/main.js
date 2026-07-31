@@ -1,13 +1,57 @@
-define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/views/SceneView", "esri/views/3d/externalRenderers", "./support/log"], function (require, exports, Map, ScreenPoint, SceneView, externalRenderers, log) {
+define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/views/SceneView", "esri/views/3d/externalRenderers", "esri/geometry/support/webMercatorUtils", "./support/log"], function (require, exports, Map, ScreenPoint, SceneView, externalRenderers, webMercatorUtils, log) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     let view;
 
-    const WHEEL_FRONT_NAMES = ["subD_RAD_VL", "subD_RAD_VR"];
-    const WHEEL_REAR_NAMES  = ["subD_RAD_H1", "subD_RAD_H2"];
-    const WHEEL_SPEED   = 0.05;
-    const BRUSH_SPEED   = 0.15;
-    const MOVE_STEP_M   = 0.5;   // metri per frame
+    const WHEEL_FRONT_NAMES    = ["subD_RAD_VL", "subD_RAD_VR"];
+    const WHEEL_REAR_NAMES     = ["subD_RAD_H1", "subD_RAD_H2"];
+    const WHEEL_SPEED          = 0.02;
+    const BRUSH_SPEED          = 0.06;
+    const MOVE_STEP_M          = 0.15;
+    const MODEL_GROUND_OFFSET_ROUTE = -4;
+    const MODEL_GROUND_OFFSET_PLACE =  1;
+
+    const ROUTE_PATH_WGS84 = [
+        [4.4962978700000349, 51.893550343000072],
+        [4.4962241000000631, 51.893512100000066],
+        [4.4947017000000642, 51.892649900000038],
+        [4.4977023000000713, 51.891012600000067],
+        [4.497890600000062,  51.890886600000044],
+        [4.4979906000000369, 51.890819700000065],
+        [4.4980954000000679, 51.890749600000049],
+        [4.5015567000000374, 51.892665500000078],
+        [4.5017527000000541, 51.892772200000081],
+        [4.5027814000000603, 51.893343700000059],
+        [4.5034408000000212, 51.89370480000008],
+        [4.5037707000000751, 51.893884400000047],
+        [4.5039540000000216, 51.893984100000068],
+        [4.5051674000000617, 51.893127800000059],
+        [4.5056502000000478, 51.893392600000027],
+        [4.5061294000000203, 51.893640800000071],
+        [4.5060913150000488, 51.893666155000062]
+    ];
+
+    // Un valore per ogni segmento (16 segmenti = 17 punti - 1).
+    // true  → spazzole attive in quel tratto
+    // false → spazzole ferme
+    const ROUTE_BRUSH_ACTIVE = [
+        true,   // segmento 0  (punto 0 → 1)
+        true,   // segmento 1  (punto 1 → 2)
+        true,   // segmento 2  (punto 2 → 3)
+        false,  // segmento 3  (punto 3 → 4)
+        false,  // segmento 4  (punto 4 → 5)
+        true,   // segmento 5  (punto 5 → 6)
+        true,   // segmento 6  (punto 6 → 7)
+        false,  // segmento 7  (punto 7 → 8)
+        true,   // segmento 8  (punto 8 → 9)
+        true,   // segmento 9  (punto 9 → 10)
+        false,  // segmento 10 (punto 10 → 11)
+        false,  // segmento 11 (punto 11 → 12)
+        true,   // segmento 12 (punto 12 → 13)
+        false,   // segmento 13 (punto 13 → 14)
+        true,   // segmento 14 (punto 14 → 15)
+        true,   // segmento 15 (punto 15 → 16)
+    ];
 
     function applyLocalOrientation(object, rotationY) {
         object.rotation.x = -Math.PI / 2;
@@ -15,41 +59,69 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
         object.rotation.y = rotationY;
     }
 
-    // Con rotation.x=-PI/2 e rotation.z=PI il fronte del modello punta lungo +X locale.
-    // In Web Mercator Y-nord, X-est:
-    //   fronte(rotation.y=0) → est (+X)
-    //   direzione effettiva  → bearing = PI/2 - rotation.y  (ruota antiorario)
-    function movePoint(point, headingRad, meters) {
-        // bearing geografico: 0=nord, PI/2=est, PI=sud, -PI/2=ovest
-        // con rotation.z=PI il modello è specchiato → il fronte con rotation.y=0 è EST
-        // quindi: bearing = PI/2 - headingRad
-        const bearing = Math.PI / 2 - headingRad;
+    // Bearing geografico (radianti) da [lng1,lat1] → [lng2,lat2]
+    // 0=nord, π/2=est (senso orario), range [-π, π]
+    function geoBearing(lng1, lat1, lng2, lat2) {
+        const lat1r = lat1 * Math.PI / 180;
+        const lat2r = lat2 * Math.PI / 180;
+        const dLon  = (lng2 - lng1) * Math.PI / 180;
+        const y = Math.sin(dLon) * Math.cos(lat2r);
+        const x = Math.cos(lat1r) * Math.sin(lat2r) - Math.sin(lat1r) * Math.cos(lat2r) * Math.cos(dLon);
+        return Math.atan2(y, x);
+    }
 
+    // Distanza in metri tra due punti WGS84 (haversine)
+    function haversineDistance(lng1, lat1, lng2, lat2) {
+        const R    = 6378137;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lng2 - lng1) * Math.PI / 180;
+        const a    = Math.sin(dLat / 2) ** 2
+                   + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180)
+                   * Math.sin(dLon / 2) ** 2;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    // Converte un bearing geografico in rotation.y per il modello.
+    // Convenzione base: rotation.y = π/2 - bearing
+    // Correzione imbardata 180° per i quadranti SE (bearing ∈ (π/2,π))
+    // e NW (bearing ∈ (-π/2,0)), identificati da sin(2·bearing) < 0.
+    function bearingToRotation(bearing) {
+        let r = Math.PI / 2 - bearing;
+        if (Math.sin(2 * bearing) < 0) r += Math.PI;
+        return r;
+    }
+
+    // Sposta un Point ArcGIS lungo un bearing geografico (rad) di `meters` metri.
+    function movePoint(point, bearingRad, meters) {
         const wkid = point.spatialReference && point.spatialReference.wkid;
         const isWebMercator = (wkid === 102100 || wkid === 3857);
 
-        let newX, newY;
-        if (isWebMercator) {
-            // Web Mercator: X=est, Y=nord — spostamento diretto in metri
-            newX = point.x + Math.sin(bearing) * meters;
-            newY = point.y + Math.cos(bearing) * meters;
-        } else {
-            // WGS84 gradi
-            const R      = 6378137;
-            const latRad = point.y * Math.PI / 180;
-            const dLat   = (Math.cos(bearing) * meters) / R;
-            const dLon   = (Math.sin(bearing) * meters) / (R * Math.cos(latRad));
-            newX = point.x + dLon * (180 / Math.PI);
-            newY = point.y + dLat * (180 / Math.PI);
-        }
+        let geoPoint = isWebMercator
+            ? webMercatorUtils.webMercatorToGeographic(point)
+            : point;
 
-        if (point.clone) {
-            const np = point.clone();
-            np.x = newX;
-            np.y = newY;
-            return np;
-        }
-        return { x: newX, y: newY, z: point.z, spatialReference: point.spatialReference };
+        const R      = 6378137;
+        const latRad = geoPoint.y * Math.PI / 180;
+        const dLat   = (Math.cos(bearingRad) * meters) / R;
+        const dLon   = (Math.sin(bearingRad) * meters) / (R * Math.cos(latRad));
+
+        const moved  = geoPoint.clone();
+        moved.x = geoPoint.x + dLon * (180 / Math.PI);
+        moved.y = geoPoint.y + dLat * (180 / Math.PI);
+
+        return isWebMercator
+            ? webMercatorUtils.geographicToWebMercator(moved)
+            : moved;
+    }
+
+    // Restituisce [lng, lat] WGS84 del Point ArcGIS
+    function pointToWGS84(point) {
+        const wkid = point.spatialReference && point.spatialReference.wkid;
+        const isWebMercator = (wkid === 102100 || wkid === 3857);
+        const geoPoint = isWebMercator
+            ? webMercatorUtils.webMercatorToGeographic(point)
+            : point;
+        return [geoPoint.x, geoPoint.y];
     }
 
     function createBrush(radius, numSectors) {
@@ -57,12 +129,9 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
         const innerGroup = new THREE.Group();
         outerGroup.add(innerGroup);
         innerGroup.rotation.x = -Math.PI / 2;
-
         const mat0 = new THREE.MeshLambertMaterial({ color: 0xff4400, side: THREE.DoubleSide });
         const mat1 = new THREE.MeshLambertMaterial({ color: 0xffcc00, side: THREE.DoubleSide });
-        const arcSteps    = 12;
-        const gapFraction = 0.18;
-
+        const arcSteps = 12, gapFraction = 0.18;
         for (let i = 0; i < numSectors; i++) {
             const a0 = (i / numSectors) * Math.PI * 2;
             const a1 = ((i + 1 - gapFraction) / numSectors) * Math.PI * 2;
@@ -73,10 +142,7 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
                 shape.lineTo(Math.cos(a) * radius, Math.sin(a) * radius);
             }
             shape.lineTo(0, 0);
-            innerGroup.add(new THREE.Mesh(
-                new THREE.ShapeGeometry(shape),
-                i % 2 === 0 ? mat0 : mat1
-            ));
+            innerGroup.add(new THREE.Mesh(new THREE.ShapeGeometry(shape), i % 2 === 0 ? mat0 : mat1));
         }
         return outerGroup;
     }
@@ -97,26 +163,54 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
             this.brushR        = null;
             this._dragLastX    = null;
             this._rotateSensitivity = 0.01;
+            this._routeIndex     = 0;
+            this._routePathDrawn = false;
+            this._brushActive    = false;   // stato spazzole durante il percorso
         }
+
+        // Aggiorna _brushActive in base al segmento corrente e logga i cambi
+        _updateBrushState() {
+            const segIdx      = this._routeIndex - 1;
+            const shouldBrush = (segIdx >= 0 && segIdx < ROUTE_BRUSH_ACTIVE.length)
+                ? ROUTE_BRUSH_ACTIVE[segIdx]
+                : false;
+            if (shouldBrush !== this._brushActive) {
+                this._brushActive = shouldBrush;
+                log.timeout(shouldBrush
+                    ? "🧹 Brush ON  — segment " + segIdx
+                    : "⏸ Brush OFF — segment " + segIdx);
+            }
+        }
+
         setup(context) {
             this.initializeRenderer(context);
             this.initializeCamera(context);
             this.initializeScene(context);
         }
+
         render(context) {
             this.updateCamera(context);
             this.updateLights(context);
 
+            if (!this._routePathDrawn) {
+                this._routePathDrawn = true;
+                this._drawRoutePath();
+            }
+
             if (this.moving && this.point != null && this.objectWrapper != null) {
-                this.point = movePoint(this.point, this.rotation, MOVE_STEP_M);
-                this.applyWrapperTransformAt(this.point);
+                this._followRoute();
             }
 
             this.wheelsFront.forEach(w => { w.rotation.x += WHEEL_SPEED; });
             this.wheelsRear.forEach(w  => { w.rotation.x += WHEEL_SPEED; });
 
-            const pulisci = document.getElementById("chkPulisci");
-            if (pulisci && pulisci.checked) {
+            // Durante il Play: usa _brushActive dall'array di rotta.
+            // A riposo:        usa il checkbox (che è abilitato).
+            const chk     = document.getElementById("chkPulisci");
+            const brushOn = this.moving
+                ? this._brushActive
+                : (chk && chk.checked);
+            if (brushOn) {
                 if (this.brushL) this.brushL.rotation.y += BRUSH_SPEED;
                 if (this.brushR) this.brushR.rotation.y -= BRUSH_SPEED;
             }
@@ -126,6 +220,56 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
             context.resetWebGLState();
             externalRenderers.requestRender(view);
         }
+
+        // Avanza il modello lungo ROUTE_PATH_WGS84
+        _followRoute() {
+            if (this._routeIndex >= ROUTE_PATH_WGS84.length) {
+                // Percorso terminato
+                const [lastLng, lastLat] = ROUTE_PATH_WGS84[ROUTE_PATH_WGS84.length - 1];
+                const wkid = this.point.spatialReference && this.point.spatialReference.wkid;
+                const endPt = this.point.clone();
+                if (wkid === 102100 || wkid === 3857) {
+                    const [mx, my] = webMercatorUtils.lngLatToXY(lastLng, lastLat);
+                    endPt.x = mx; endPt.y = my;
+                } else {
+                    endPt.x = lastLng; endPt.y = lastLat;
+                }
+                this.point = endPt;
+                this.applyWrapperTransformAt(this.point);
+                this.moving = false;
+                // Riabilita checkbox e logga fine
+                const chk = document.getElementById("chkPulisci");
+                if (chk) chk.disabled = false;
+                const btn = document.getElementById("btnMoveForward");
+                if (btn) btn.textContent = "▶ Play";
+                log.timeout("Route completed");
+                return;
+            }
+
+            // Aggiorna stato spazzole per il segmento corrente
+            this._updateBrushState();
+
+            const [curLng, curLat] = pointToWGS84(this.point);
+            const [tgtLng, tgtLat] = ROUTE_PATH_WGS84[this._routeIndex];
+
+            const dist    = haversineDistance(curLng, curLat, tgtLng, tgtLat);
+            const bearing = geoBearing(curLng, curLat, tgtLng, tgtLat);
+
+            this.rotation = bearingToRotation(bearing);
+            applyLocalOrientation(this.object, this.rotation);
+            this.objectWrapper.updateMatrixWorld(true);
+
+            if (dist <= MOVE_STEP_M) {
+                this.point = movePoint(this.point, bearing, dist);
+                this._routeIndex++;
+                this._updateBrushState();   // aggiorna subito al nuovo segmento
+            } else {
+                this.point = movePoint(this.point, bearing, MOVE_STEP_M);
+            }
+
+            this.applyWrapperTransformAt(this.point);
+        }
+
         add(location) {
             if (this.object == null) {
                 this.point = location;
@@ -134,21 +278,58 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
             } else {
                 this.placed = true;
                 this.point  = location;
-                this.applyWrapperTransformAt(location);
+                this.applyWrapperTransformAt(location, MODEL_GROUND_OFFSET_PLACE);
                 externalRenderers.requestRender(view);
                 log.timeout("Sweeper placed");
                 const btn = document.getElementById("btnMoveForward");
                 if (btn) btn.disabled = false;
             }
         }
+
         toggleMoving() {
             if (this.object == null || this.objectWrapper == null || this.point == null) return;
             this.placed = true;
             this.moving = !this.moving;
+
+            const chk = document.getElementById("chkClean");
+
+            if (this.moving) {
+                // Disabilita checkbox: durante il Play le spazzole sono gestite dall'array
+                if (chk) chk.disabled = true;
+
+                this._routeIndex = 1;
+                this._brushActive = false;      // verrà aggiornato subito sotto
+                this._updateBrushState();       // log immediato del segmento 0
+
+                const [lng0, lat0] = ROUTE_PATH_WGS84[0];
+                const wkid = this.point.spatialReference && this.point.spatialReference.wkid;
+                const startPt = this.point.clone();
+                if (wkid === 102100 || wkid === 3857) {
+                    const [mx, my] = webMercatorUtils.lngLatToXY(lng0, lat0);
+                    startPt.x = mx; startPt.y = my;
+                } else {
+                    startPt.x = lng0; startPt.y = lat0;
+                }
+                this.point = startPt;
+
+                view.goTo({ center: [lng0, lat0], zoom: 18, tilt: 65 });
+
+                const [lng1, lat1] = ROUTE_PATH_WGS84[1];
+                this.rotation = bearingToRotation(geoBearing(lng0, lat0, lng1, lat1));
+                applyLocalOrientation(this.object, this.rotation);
+                this.objectWrapper.updateMatrixWorld(true);
+                this.applyWrapperTransformAt(this.point);
+
+            } else {
+                // Stop: riabilita checkbox
+                if (chk) chk.disabled = false;
+                log.timeout("Stop");
+            }
+
             const btn = document.getElementById("btnMoveForward");
             if (btn) btn.textContent = this.moving ? "⏹ Stop" : "▶ Play";
-            log.timeout(this.moving ? "Moving..." : "Stopped");
         }
+
         addColladaModel(location) {
             const loader = new THREE.ColladaLoader();
             loader.load("./app/data/sweeper.dae", (collada) => {
@@ -156,7 +337,7 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
                 this.objectWrapper = new THREE.Group();
                 this.objectWrapper.add(this.object);
                 applyLocalOrientation(this.object, this.rotation);
-                this.applyWrapperTransformAt(location);
+                this.applyWrapperTransformAt(location, MODEL_GROUND_OFFSET_PLACE);
                 this.scene.add(this.objectWrapper);
 
                 this.wheelsFront = [];
@@ -182,44 +363,37 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
                 this.objectWrapper.add(this.object);
                 this.object.updateMatrixWorld(true);
 
-                const brushRadius = size.x * 3.50;
+                const brushRadius = size.x * 6.50;
                 const groundY     = bbox.min.y;
                 const frontZ      = wFL.z + brushRadius * 2.5;
                 const outset      = brushRadius * 3.50;
-                const brushX_L    = bbox.min.x - outset;
-                const brushX_R    = bbox.max.x + outset;
 
                 this.brushL = createBrush(brushRadius, 8);
-                this.brushL.position.set(brushX_L, groundY, frontZ);
+                this.brushL.position.set(bbox.min.x - outset, groundY, frontZ);
                 this.object.add(this.brushL);
 
                 this.brushR = createBrush(brushRadius, 8);
-                this.brushR.position.set(brushX_R, groundY, frontZ);
+                this.brushR.position.set(bbox.max.x + outset, groundY, frontZ);
                 this.object.add(this.brushR);
 
                 externalRenderers.requestRender(view);
             });
         }
-        bearing(p1, p2) {
-            var dLon = (p2.x - p1.x);
-            var y = Math.sin(dLon) * Math.cos(p2.y);
-            var x = Math.cos(p1.y) * Math.sin(p2.y) - Math.sin(p1.y) * Math.cos(p2.y) * Math.cos(dLon);
-            var brng = Math.atan2(y, x);
-            return 2 * Math.PI - ((brng + (2 * Math.PI)) % (2 * Math.PI));
-        }
+
         update(renderAt) {
             if (this.placed) return;
             if (this.objectWrapper != null) {
                 const pt = view.toMap(new ScreenPoint(renderAt.x, renderAt.y));
                 if (pt != null) {
                     this.point = pt;
-                    this.applyWrapperTransformAt(this.point);
+                    this.applyWrapperTransformAt(this.point, MODEL_GROUND_OFFSET_PLACE);
                     applyLocalOrientation(this.object, this.rotation);
                     this.objectWrapper.updateMatrixWorld(true);
                     externalRenderers.requestRender(view);
                 }
             }
         }
+
         startDragRotate(x) { this._dragLastX = x; }
         updateDragRotate(x) {
             if (this._dragLastX === null || !this.objectWrapper) return;
@@ -232,6 +406,7 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
             log.timeout("Heading: " + Math.round(this.rotation * 180 / Math.PI) + "°");
         }
         endDragRotate() { this._dragLastX = null; }
+
         rotate() {
             if (this.point != null && this.objectWrapper != null) {
                 this.rotation += 0.05;
@@ -241,9 +416,12 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
                 externalRenderers.requestRender(view);
             }
         }
-        applyWrapperTransformAt(location) {
+
+        applyWrapperTransformAt(location, groundOffset = MODEL_GROUND_OFFSET_ROUTE) {
             const transform = new THREE.Matrix4();
-            const z = (location.z !== undefined && !isNaN(location.z)) ? location.z + 5 : 5;
+            const z = (location.z !== undefined && !isNaN(location.z))
+                ? location.z + groundOffset
+                : groundOffset;
             externalRenderers.renderCoordinateTransformAt(
                 view, [location.x, location.y, z],
                 location.spatialReference, transform.elements
@@ -251,6 +429,7 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
             transform.decompose(this.objectWrapper.position, this.objectWrapper.quaternion, this.objectWrapper.scale);
             this.objectWrapper.scale.set(this.baseScale, this.baseScale, this.baseScale);
         }
+
         initializeRenderer(context) {
             this.renderer = new THREE.WebGLRenderer({ context: context.gl, premultipliedAlpha: false });
             this.renderer.autoClearDepth = false;
@@ -273,6 +452,25 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
             this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
             this.scene.add(this.directionalLight);
         }
+
+        // Disegna ROUTE_PATH_WGS84 come linea sottile non invasiva
+        _drawRoutePath() {
+            const points = [];
+            for (const [lng, lat] of ROUTE_PATH_WGS84) {
+                const [mx, my] = webMercatorUtils.lngLatToXY(lng, lat);
+                const mat = new THREE.Matrix4();
+                externalRenderers.renderCoordinateTransformAt(view, [mx, my, 2], view.spatialReference, mat.elements);
+                const pos = new THREE.Vector3(), quat = new THREE.Quaternion(), sc = new THREE.Vector3();
+                mat.decompose(pos, quat, sc);
+                points.push(pos);
+            }
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            this.scene.add(new THREE.Line(geometry,
+                new THREE.LineBasicMaterial({ color: 0x29b6f6, transparent: true, opacity: 0.55, depthWrite: false })));
+            this.scene.add(new THREE.Points(geometry,
+                new THREE.PointsMaterial({ color: 0x29b6f6, size: 3, sizeAttenuation: false, transparent: true, opacity: 0.7 })));
+        }
+
         updateCamera(context) {
             const camera = context.camera;
             this.renderer.setViewport(0, 0, view.width, view.height);
@@ -290,6 +488,7 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
             this.ambientLight.color = new THREE.Color(ambient.color[0], ambient.color[1], ambient.color[2]);
         }
     }
+
     let renderer;
     function initialize() {
         view = new SceneView({
@@ -308,9 +507,7 @@ define(["require", "exports", "esri/Map", "esri/geometry/ScreenPoint", "esri/vie
             externalRenderers.add(view, renderer);
 
             const btn = document.getElementById("btnMoveForward");
-            if (btn) {
-                btn.addEventListener("click", () => renderer.toggleMoving());
-            }
+            if (btn) btn.addEventListener("click", () => renderer.toggleMoving());
 
             view.on("click", (event) => {
                 if (event.native && event.native.shiftKey) return;
