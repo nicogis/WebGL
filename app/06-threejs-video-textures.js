@@ -220,7 +220,7 @@ define(["require", "exports", "esri/Map", "esri/layers/Layer", "esri/views/Scene
                 components: ["compass"]
             }
         });
-        Layer.fromArcGISServerUrl({ url: "http://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/New_York_LoD2_3D_Buildings/SceneServer/layers/0" })
+        Layer.fromArcGISServerUrl({ url: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/New_York_LoD2_3D_Buildings/SceneServer/layers/0" })
             .then((layer) => {
             view.map.add(layer);
         });
